@@ -29,7 +29,7 @@ namespace BigNum {
         //create string to store digits
         std::string stringNumber;
         
-        //set concatenate the string by converting each digit in the vector to a char
+        //concatenate the string by converting each digit in the vector to a char
         for (int i = 0; i < digits.size(); i++) {
             stringNumber += std::to_string(digits.at(i));
         }
@@ -72,38 +72,41 @@ namespace BigNum {
         }
         
         //start from back of the vector and decrease until reaching the front
-        for (int position = longerNumber->size() - 1; position >= 0; position--) {
-            if (position >= digitDiff) {
-                temporarySum = carry + shorterNumber->at(position - digitDiff)  + longerNumber->at(position);
+        for (int i = longerNumber->size() - 1; i >= 0; i--) {
+            //if the shorter number has enough a digit at the position
+            if (i >= digitDiff) {
+                temporarySum = carry + shorterNumber->at(i - digitDiff)  + longerNumber->at(i);
+            } else {
+                temporarySum = carry + longerNumber->at(i);
             }
-            else {
-                temporarySum = carry + longerNumber->at(position);
-            }
+            
             //if the sum of the two numbers is double digit, carry it to the next index
             if (temporarySum > 9) {
                 carry = 1;
                 temporarySum -= 10;
-            } else {
+            } else
                 carry = 0;
-            }
-            
+            //at temporary sum to the current sum
             sum = std::to_string(temporarySum) + sum;
         }
-        
+        //if a carry digit is still leftover
         if (carry > 0) {
             sum = "1" + sum;
         }
         return BigNumbers(sum);
     }
     
+    //subtraction operator
     BigNumbers BigNumbers::operator -(const BigNumbers & right) {
         //initialize variables to be used later on
         int carry = 0;
         int tempDifference = 0;
         std::string difference = "";
         
+        //find difference in size between the two numbers
         int digitDiff = std::abs((int)(right.digits.size() - digits.size()));
         
+        //create vectors to store digits of the longer and shorter number
         const std::vector<int>* shorterNumber;
         const std::vector<int>* longerNumber;
         
@@ -176,53 +179,8 @@ namespace BigNum {
             realDifference = "0";
         return BigNumbers(realDifference);
     }
-    
-    BigNumbers BigNumbers::operator *(const BigNumbers & right) {
-        BigNumbers times("0");
-        BigNumbers product("0");
-        
-        if (right == times) {
-            return times;
-        }
-        else if (right == BigNumbers("1")) {
-            return *this;
-        }
-        
-        while (!(times > right)) {
-            product = product + *this;
-            times = times + BigNumbers("1");
-        }
-        return product;
-    }
-    
-    BigNumbers BigNumbers::operator /(const BigNumbers & right) {
-        BigNumbers quotient("0");
-        BigNumbers remainder("0");
-        remainder.digits = digits;
-        
-        BigNumbers z("0");
-        
-        while (remainder >= right && !(remainder == z) ) {
-            quotient = quotient + BigNumbers("1");
-            remainder = remainder - right;
-        }
-        return quotient;
-    }
-    
-    BigNumbers BigNumbers::operator %(const BigNumbers & right) {
-        BigNumbers quotient("0");
-        BigNumbers remainder("0");
-        remainder.digits = digits;
-        
-        BigNumbers noRemainder("0");
-    
-        while (remainder >= right && !(remainder == noRemainder)) {
-            quotient = quotient + BigNumbers("1");
-            remainder = remainder - right;
-        }
-        return remainder;
-    }
-    
+   
+    //equality operator
     bool operator ==(const BigNumbers & left, const BigNumbers & right) {
         if (left.digits.size() != right.digits.size()) return false;
         
@@ -236,6 +194,7 @@ namespace BigNum {
         return true;
     }
     
+    //greater than operator
     bool operator >(const BigNumbers & left, const BigNumbers & right) {
         int leftDigits = left.digits.size();
         int rhsDigits = right.digits.size();
@@ -245,7 +204,6 @@ namespace BigNum {
             return (leftDigits > rhsDigits);
         }
         
-        //
         for (int i = 0; i < leftDigits; i++) {
             if (left.digits.at(i) < right.digits.at(i)) {
                 return false;
@@ -260,6 +218,7 @@ namespace BigNum {
         return true;
     }
     
+    //greater than or equal to operator
     bool operator >=(const BigNumbers & left, const BigNumbers & right) {
         return (left > right) || left == right;
     }
