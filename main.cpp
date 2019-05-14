@@ -1,69 +1,11 @@
-/**
- * @file main.cpp
- * @author Giles Carlos
- * @brief Test BigNumbers.
- *
- */
+#include "mainwindow.h"
+#include <QApplication>
 
-#include <gtest/gtest.h>
-#include "BigNumbersLib.h"
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MainWindow w;
+    w.show();
 
-class BigNumbersTest : public testing::Test {
-    
-};
-
-TEST_F(BigNumbersTest, CanAdd) {
-    BigNum::BigNumbers first("10000000001");
-    BigNum::BigNumbers second("999999999");
-    
-    BigNum::BigNumbers actual = first + second;
-    
-    BigNum::BigNumbers expected("11000000000");
-    
-    ASSERT_TRUE((expected == actual));
+    return a.exec();
 }
-
-TEST_F(BigNumbersTest, CanSubtract) {
-    BigNum::BigNumbers first("80000000000");
-    BigNum::BigNumbers second("55600000");
-    
-    BigNum::BigNumbers actual = first - second;
-    
-    BigNum::BigNumbers expected("79944400000");
-    
-    ASSERT_TRUE((expected == actual));
-}
-
-TEST_F(BigNumbersTest, CanMultiply) {
-    BigNum::BigNumbers first("24935130");
-    BigNum::BigNumbers second("15570");
-    
-    BigNum::BigNumbers actual = first * second;
-    
-    BigNum::BigNumbers expected("388239974100");
-    
-    ASSERT_TRUE((expected == actual));
-}
-
-TEST_F(BigNumbersTest, CanDivide) {
-    BigNum::BigNumbers first("42300000000");
-    BigNum::BigNumbers second("65789");
-    
-    BigNum::BigNumbers actual = first / second;
-    
-    BigNum::BigNumbers expected("10");
-    
-    ASSERT_TRUE((expected == actual));
-}
-
-TEST_F(BigNumbersTest, CanGetRemainder) {
-    BigNum::BigNumbers first("2470000000000");
-    BigNum::BigNumbers second("2470000000000");
-    
-    BigNum::BigNumbers actual = first % second;
-    
-    BigNum::BigNumbers expected("0");
-    
-    ASSERT_TRUE((expected == actual));
-}
-
