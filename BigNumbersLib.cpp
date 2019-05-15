@@ -179,6 +179,52 @@ namespace BigNum {
             realDifference = "0";
         return BigNumbers(realDifference);
     }
+    
+    BigNumbers BigNumbers::operator *(const BigNumbers & right) {
+        BigNumbers times("0");
+        BigNumbers product("0");
+        
+        if (right == times) {
+            return times;
+        }
+        else if (right == BigNumbers("1")) {
+            return *this;
+        }
+        
+        while (!(times > right)) {
+            product = product + *this;
+            times = times + BigNumbers("1");
+        }
+        return product;
+    }
+    
+    BigNumbers BigNumbers::operator /(const BigNumbers & right) {
+        BigNumbers quotient("0");
+        BigNumbers remainder("0");
+        remainder.digits = digits;
+        
+        BigNumbers z("0");
+        
+        while (remainder >= right && !(remainder == z) ) {
+            quotient = quotient + BigNumbers("1");
+            remainder = remainder - right;
+        }
+        return quotient;
+    }
+    
+    BigNumbers BigNumbers::operator %(const BigNumbers & right) {
+        BigNumbers quotient("0");
+        BigNumbers remainder("0");
+        remainder.digits = digits;
+        
+        BigNumbers noRemainder("0");
+        
+        while (remainder >= right && !(remainder == noRemainder)) {
+            quotient = quotient + BigNumbers("1");
+            remainder = remainder - right;
+        }
+        return remainder;
+    }
    
     //equality operator
     bool operator ==(const BigNumbers & left, const BigNumbers & right) {
